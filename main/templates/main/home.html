@@ -1,0 +1,39 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Головна{% endblock %}
+
+{% block content %}
+    <h1>Категорії</h1>
+
+    <div class="card">
+        {% for category in categories %}
+            <a class="category-link" href="{% url 'category_detail' category.id %}">
+                {{ category.name }}
+            </a>
+        {% empty %}
+            <p>Категорій поки немає.</p>
+        {% endfor %}
+    </div>
+
+    <h1>Усі товари</h1>
+
+    <div class="product-grid">
+        {% for product in products %}
+            <div class="card product-card">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                {% else %}
+                    <p>Фото немає</p>
+                {% endif %}
+
+                <h3>{{ product.name }}</h3>
+                <p><strong>Категорія:</strong> {{ product.category.name }}</p>
+                <p><strong>Ціна:</strong> {{ product.price }} грн</p>
+
+                <a class="btn" href="{% url 'product_detail' product.id %}">Переглянути товар</a>
+            </div>
+        {% empty %}
+            <p>Товарів поки немає.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

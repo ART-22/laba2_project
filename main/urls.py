@@ -1,10 +1,8 @@
-from django.urls import path , include
+from django.urls import path
 from . import views
-from django.conf import settings
-from django.conf.urls.static import static
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('about/', views.about, name='about'),
-    
-]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    path('', views.home, name='home'),
+    path('category/<int:category_id>/', views.category_detail, name='category_detail'),
+    path('product/<int:product_id>/', views.product_detail, name='product_detail'),
+]

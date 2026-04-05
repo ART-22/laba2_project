@@ -1,0 +1,28 @@
+{% extends 'main/base.html' %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <p>
+            <a class="btn" href="{% url 'category_detail' product.category.id %}">
+                Назад до категорії
+            </a>
+        </p>
+
+        <h1>{{ product.name }}</h1>
+
+        {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 400px; width: 100%; border-radius: 10px;">
+        {% else %}
+            <p>Фото немає</p>
+        {% endif %}
+
+        <p><strong>Категорія:</strong> {{ product.category.name }}</p>
+        <p><strong>Ціна:</strong> {{ product.price }} грн</p>
+        <p><strong>Опис:</strong></p>
+        <p>{{ product.description }}</p>
+
+        <button class="btn-disabled" disabled>Купити</button>
+    </div>
+{% endblock %}
