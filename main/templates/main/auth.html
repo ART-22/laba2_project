@@ -1,0 +1,27 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Marlia — {% if page == 'login' %}Вхід{% else %}Реєстрація{% endif %}{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+    <div class="auth-box">
+        <h1>{% if page == 'login' %}Вхід до акаунту{% else %}Реєстрація{% endif %}</h1>
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn">
+                {% if page == 'login' %}Увійти{% else %}Зареєструватись{% endif %}
+            </button>
+        </form>
+
+        {% if page == 'login' %}
+        <p class="auth-link">Немає акаунту? <a href="{% url 'register' %}">Зареєструватись</a></p>
+        {% else %}
+        <p class="auth-link">Вже є акаунт? <a href="{% url 'login' %}">Увійти</a></p>
+        {% endif %}
+
+        <a href="{% url 'home' %}" class="btn-back">← На головну</a>
+    </div>
+</section>
+{% endblock %}

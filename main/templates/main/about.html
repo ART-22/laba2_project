@@ -1,0 +1,15 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Marlia — Про нас{% endblock %}
+
+{% block content %}
+<section class="page-section">
+    <h1>Про нас</h1>
+    <a href="{% url 'home' %}" class="btn-back">← На головну</a>
+    <div class="about-content">
+        <p>Marlia — це сучасний інтернет-магазин електроніки та гаджетів.</p>
+        <p>Ми пропонуємо найкращі товари від провідних виробників світу.</p>
+        <p>Наша місія — зробити якісну техніку доступною для кожного.</p>
+    </div>
+</section>
+{% endblock %}

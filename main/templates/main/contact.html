@@ -1,0 +1,15 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Marlia — Контакти{% endblock %}
+
+{% block content %}
+<section class="page-section">
+    <h1>Контакти</h1>
+    <a href="{% url 'home' %}" class="btn-back">← На головну</a>
+    <div class="contact-content">
+        <p>📧 Email: marlia@shop.ua</p>
+        <p>📞 Телефон: +38 (099) 123-45-67</p>
+        <p>📍 Адреса: м. Львів, вул. Шевченка, 1</p>
+    </div>
+</section>
+{% endblock %}

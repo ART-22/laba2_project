@@ -1,39 +1,63 @@
 {% extends 'main/base.html' %}
 
-{% block title %}Головна{% endblock %}
+{% block title %}Marlia — Головна{% endblock %}
 
 {% block content %}
-    <h1>Категорії</h1>
+<section class="hero">
+    <h1>Ласкаво просимо до Marlia!</h1>
+    <p>Найкращі товари за найкращими цінами</p>
+    <a href="{% url 'products' %}" class="btn">Переглянути товари</a>
+</section>
 
-    <div class="card">
-        {% for category in categories %}
-            <a class="category-link" href="{% url 'category_detail' category.id %}">
-                {{ category.name }}
-            </a>
-        {% empty %}
-            <p>Категорій поки немає.</p>
+{% if messages %}
+{% for message in messages %}
+<div class="alert">{{ message }}</div>
+{% endfor %}
+{% endif %}
+
+<section class="links">
+    <h2>Категорії</h2>
+    <div class="card-grid">
+        {% for cat in categories %}
+        <a href="{% url 'category_detail' cat.id %}" class="card">{{ cat.name }}</a>
         {% endfor %}
     </div>
+</section>
 
-    <h1>Усі товари</h1>
-
-    <div class="product-grid">
+<section class="links">
+    <h2>Популярні товари</h2>
+    <div class="card-grid">
         {% for product in products %}
-            <div class="card product-card">
-                {% if product.image %}
-                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                {% else %}
-                    <p>Фото немає</p>
-                {% endif %}
-
-                <h3>{{ product.name }}</h3>
-                <p><strong>Категорія:</strong> {{ product.category.name }}</p>
-                <p><strong>Ціна:</strong> {{ product.price }} грн</p>
-
-                <a class="btn" href="{% url 'product_detail' product.id %}">Переглянути товар</a>
+        <div class="product-card">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            {% else %}
+            <div class="no-image">Фото відсутнє</div>
+            {% endif %}
+            <h3>{{ product.name }}</h3>
+            <p>{{ product.description|truncatewords:10 }}</p>
+            <span class="price">{{ product.price }} грн</span>
+            <div class="product-card-buttons">
+                <a href="{% url 'product_detail' product.id %}" class="btn-detail">Детальніше</a>
+                <a href="{% url 'cart_add' product.id %}" class="btn">🛒 Купити</a>
             </div>
-        {% empty %}
-            <p>Товарів поки немає.</p>
+        </div>
         {% endfor %}
     </div>
+    <div style="text-align:center; margin-top:20px;">
+        <a href="{% url 'products' %}" class="btn">Всі товари →</a>
+    </div>
+</section>
+
+<!-- ФОРМА РОЗСИЛКИ -->
+<section class="newsletter-section">
+    <h2>📧 Підписатись на розсилку</h2>
+    <p>Отримуйте найкращі пропозиції першими!</p>
+    <form method="POST" action="{% url 'newsletter' %}" class="newsletter-form">
+        {% csrf_token %}
+        <input type="email" name="email" placeholder="Введіть ваш email..." required>
+        <button type="submit" class="btn">Підписатись</button>
+    </form>
+</section>
+
 {% endblock %}

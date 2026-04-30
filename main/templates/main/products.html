@@ -1,12 +1,18 @@
 {% extends 'main/base.html' %}
 
-{% block title %}Marlia — {{ category.name }}{% endblock %}
+{% block title %}Marlia — Товари{% endblock %}
 
 {% block content %}
 <section class="page-section">
+    <h1>Наші товари</h1>
     <a href="{% url 'home' %}" class="btn-back">← На головну</a>
-    <h1>{{ category.name }}</h1>
-    <p class="category-desc">{{ category.description }}</p>
+
+    <div class="categories">
+        <a href="{% url 'products' %}" class="cat-btn {% if not selected_category %}active{% endif %}">Всі</a>
+        {% for cat in categories %}
+        <a href="{% url 'category_detail' cat.id %}" class="cat-btn">{{ cat.name }}</a>
+        {% endfor %}
+    </div>
 
     <div class="card-grid">
         {% for product in products %}
@@ -25,7 +31,7 @@
             </div>
         </div>
         {% empty %}
-        <p>Товарів в цій категорії поки немає</p>
+        <p>Товарів поки немає</p>
         {% endfor %}
     </div>
 </section>
