@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Product, Review, CartItem, Newsletter
+from .models import Category, Product, Review, CartItem, Newsletter, PasswordResetCode, Order
 
 
 @admin.register(Category)
@@ -28,7 +28,19 @@ class CartItemAdmin(admin.ModelAdmin):
     list_filter = ('user',)
 
 
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('user', 'product', 'quantity', 'total_price', 'created_at')
+    list_filter = ('user',)
+    search_fields = ('user__username', 'product__name')
+
+
 @admin.register(Newsletter)
 class NewsletterAdmin(admin.ModelAdmin):
     list_display = ('email', 'created_at')
     search_fields = ('email',)
+
+
+@admin.register(PasswordResetCode)
+class PasswordResetCodeAdmin(admin.ModelAdmin):
+    list_display = ('user', 'code', 'created_at', 'is_used')

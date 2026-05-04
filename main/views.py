@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.models import User
 from django.contrib import messages
-from .models import Product, Category, CartItem, Newsletter, Review
+from django.core.mail import send_mail
+from django.conf import settings
+from .models import Product, Category, CartItem, Newsletter, Review, PasswordResetCode, Order
 
 
 def get_base_context(page):
@@ -43,10 +46,10 @@ def product_detail(request, product_id):
 
 def category_detail(request, category_id):
     category = get_object_or_404(Category, id=category_id)
-    products = category.products.all()
+    prods = category.products.all()
     context = get_base_context('products')
     context['category'] = category
-    context['products'] = products
+    context['products'] = prods
     return render(request, 'main/category_detail.html', context)
 
 
@@ -121,6 +124,21 @@ def cart_remove(request, item_id):
     return redirect('cart')
 
 
+def cart_update(request, item_id):
+    item = get_object_or_404(CartItem, id=item_id, user=request.user)
+    action = request.POST.get('action')
+    if action == 'increase':
+        item.quantity += 1
+        item.save()
+    elif action == 'decrease':
+        if item.quantity > 1:
+            item.quantity -= 1
+            item.save()
+        else:
+            item.delete()
+    return redirect('cart')
+
+
 def newsletter(request):
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -147,3 +165,82 @@ def add_review(request, product_id):
             )
             messages.success(request, 'Ваш відгук додано!')
     return redirect('product_detail', product_id=product_id)
+
+
+def profile(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    if request.user.is_superuser:
+        orders = Order.objects.all().order_by('-created_at')
+    else:
+        orders = Order.objects.filter(user=request.user).order_by('-created_at')
+    context = get_base_context('profile')
+    context['orders'] = orders
+    return render(request, 'main/profile.html', context)
+
+
+def password_reset_request(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        try:
+            user = User.objects.get(email=email)
+            code = PasswordResetCode.generate_code()
+            PasswordResetCode.objects.create(user=user, code=code)
+            send_mail(
+                'Відновлення пароля — Marlia',
+                f'Ваш код для відновлення пароля: {code}\nКод дійсний 10 хвилин.',
+                settings.DEFAULT_FROM_EMAIL,
+                [email],
+            )
+            request.session['reset_email'] = email
+            messages.success(request, 'Код надіслано на ваш email!')
+            return redirect('password_reset_verify')
+        except User.DoesNotExist:
+            messages.error(request, 'Користувача з таким email не знайдено!')
+    context = get_base_context('password_reset')
+    return render(request, 'main/password_reset.html', context)
+
+
+def password_reset_verify(request):
+    if request.method == 'POST':
+        code = request.POST.get('code')
+        email = request.session.get('reset_email')
+        try:
+            user = User.objects.get(email=email)
+            reset = PasswordResetCode.objects.filter(
+                user=user, code=code, is_used=False
+            ).latest('created_at')
+            request.session['reset_code'] = code
+            return redirect('password_reset_confirm')
+        except:
+            messages.error(request, 'Невірний код!')
+    context = get_base_context('password_reset')
+    return render(request, 'main/password_reset_verify.html', context)
+
+
+def password_reset_confirm(request):
+    if request.method == 'POST':
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+        if password1 != password2:
+            messages.error(request, 'Паролі не співпадають!')
+        else:
+            email = request.session.get('reset_email')
+            code = request.session.get('reset_code')
+            try:
+                user = User.objects.get(email=email)
+                reset = PasswordResetCode.objects.filter(
+                    user=user, code=code, is_used=False
+                ).latest('created_at')
+                user.set_password(password1)
+                user.save()
+                reset.is_used = True
+                reset.save()
+                del request.session['reset_email']
+                del request.session['reset_code']
+                messages.success(request, 'Пароль успішно змінено!')
+                return redirect('login')
+            except:
+                messages.error(request, 'Помилка! Спробуйте знову.')
+    context = get_base_context('password_reset')
+    return render(request, 'main/password_reset_confirm.html', context)

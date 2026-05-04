@@ -265,7 +265,6 @@ footer {
     color: white;
 }
 
-/* ===== СТОРІНКА ТОВАРУ ===== */
 .product-detail {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -320,7 +319,6 @@ footer {
     color: #1a6b3a;
 }
 
-/* ===== ВІДГУКИ ===== */
 .reviews {
     margin-top: 40px;
 }
@@ -349,7 +347,6 @@ footer {
     color: #1a3a6b;
 }
 
-/* ===== КНОПКИ КАРТКИ ===== */
 .product-card-buttons {
     display: flex;
     gap: 10px;
@@ -376,7 +373,6 @@ footer {
     cursor: not-allowed;
 }
 
-/* ===== БЕЗ ФОТО ===== */
 .no-image {
     background-color: #ddd;
     height: 180px;
@@ -388,7 +384,6 @@ footer {
     font-size: 0.9rem;
 }
 
-/* ===== КАТЕГОРІЯ ===== */
 .category-desc {
     color: #555;
     margin-bottom: 20px;
@@ -472,7 +467,7 @@ footer {
     margin-bottom: 20px;
 }
 
-/* ===== АЛЕРТ ===== */
+
 .alert {
     background-color: #d4edda;
     border: 1px solid #1a6b3a;
@@ -574,4 +569,94 @@ footer {
 .newsletter-form .btn {
     background-color: #f0c93a;
     color: #333;
+}
+/* ===== КІЛЬКІСТЬ ТОВАРУ ===== */
+.cart-quantity {
+    display: flex;
+    align-items: center;
+}
+
+.cart-quantity form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.qty-btn {
+    background-color: #1a3a6b;
+    color: white;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.qty-btn:hover {
+    background-color: #122d57;
+}
+
+.qty-number {
+    font-size: 1.2rem;
+    font-weight: bold;
+    min-width: 30px;
+    text-align: center;
+}
+
+/* ===== ПРОФІЛЬ ===== */
+.profile-info {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+.profile-info p {
+    margin-bottom: 10px;
+    font-size: 1rem;
+    color: #333;
+}
+
+.profile-info .btn {
+    margin-top: 10px;
+}
+
+/* ===== ТАБЛИЦЯ ЗАМОВЛЕНЬ ===== */
+.orders-section h2 {
+    color: #1a3a6b;
+    margin-bottom: 20px;
+}
+
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.orders-table th {
+    background-color: #1a3a6b;
+    color: white;
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.orders-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+    color: #333;
+}
+
+.orders-table tr:hover {
+    background-color: #f0f4ff;
+}
+
+/* ===== ALERT ERROR ===== */
+.alert-error {
+    background-color: #fde8e8;
+    border-color: #e74c3c;
+    color: #e74c3c;
 }

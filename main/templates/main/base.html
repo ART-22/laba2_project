@@ -13,6 +13,7 @@
     <div class="logo">🛍️ Marlia</div>
     <nav>
         <a href="{% url 'home' %}">Головна</a>
+        <a href="{% url 'profile' %}">👤 Кабінет</a>
         <a href="{% url 'products' %}">Всі товари</a>
         {% for cat in categories %}
         <a href="{% url 'products' %}?category={{ cat.id }}">{{ cat.name }}</a>
@@ -43,20 +44,28 @@
         </div>
         <div class="footer-col">
             <h3>Навігація</h3>
-            <a href="{% url 'home' %}">Головна</a>
-            <a href="{% url 'products' %}">Товари</a>
-            <a href="{% url 'about' %}">Про нас</a>
-            <a href="{% url 'contact' %}">Контакти</a>
+            {% if user.is_authenticated %}
+
+            <a href="{% url 'cart' %}">🛒 Кошик</a>
+            <a href="{% url 'profile' %}">👤 Кабінет</a>
+            <a href="{% url 'logout' %}">Вийти ({{ user.username }})</a>
+
+            {% else %}
+
+                <a href="{% url 'login' %}">Вхід</a>
+                <a href="{% url 'register' %}">Реєстрація</a>
+            {% endif %}
+
         </div>
         <div class="footer-col">
             <h3>Контакти</h3>
             <p>📧 marlia@shop.ua</p>
-            <p>📞 +38 (099) 123-45-67</p>
+            <p>📞 +38 (000) 000-00-00</p>
             <p>📍 м. Львів, вул. Шевченка, 1</p>
         </div>
     </div>
     <div class="footer-bottom">
-        <p>© 2025 Marlia — Всі права захищені</p>
+        <p>© 2026 Marlia — Всі права захищені</p>
     </div>
 </footer>
 

@@ -1,0 +1,49 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Marlia — Особистий кабінет{% endblock %}
+
+{% block content %}
+<section class="page-section">
+    <h1>👤 Особистий кабінет</h1>
+    <a href="{% url 'home' %}" class="btn-back">← На головну</a>
+
+    <div class="profile-info">
+        <p><strong>Імʼя:</strong> {{ user.username }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <a href="{% url 'password_reset_request' %}" class="btn">🔑 Змінити пароль</a>
+    </div>
+
+    <div class="orders-section">
+        <h2>{% if user.is_superuser %}Всі замовлення{% else %}Мої замовлення{% endif %}</h2>
+
+        {% if orders %}
+        <table class="orders-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    {% if user.is_superuser %}<th>Користувач</th>{% endif %}
+                    <th>Товар</th>
+                    <th>Кількість</th>
+                    <th>Сума</th>
+                    <th>Дата</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    {% if user.is_superuser %}<td>{{ order.user.username }}</td>{% endif %}
+                    <td>{{ order.product.name }}</td>
+                    <td>{{ order.quantity }}</td>
+                    <td>{{ order.total_price }} грн</td>
+                    <td>{{ order.created_at|date:"d.m.Y" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>Замовлень ще немає</p>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

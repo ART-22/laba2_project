@@ -14,6 +14,11 @@ urlpatterns = [
     path('cart/', views.cart, name='cart'),
     path('cart/add/<int:product_id>/', views.cart_add, name='cart_add'),
     path('cart/remove/<int:item_id>/', views.cart_remove, name='cart_remove'),
+    path('cart/update/<int:item_id>/', views.cart_update, name='cart_update'),
     path('newsletter/', views.newsletter, name='newsletter'),
     path('review/<int:product_id>/', views.add_review, name='add_review'),
+    path('profile/', views.profile, name='profile'),
+    path('password-reset/', views.password_reset_request, name='password_reset_request'),
+    path('password-reset/verify/', views.password_reset_verify, name='password_reset_verify'),
+    path('password-reset/confirm/', views.password_reset_confirm, name='password_reset_confirm'),
 ]

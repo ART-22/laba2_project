@@ -131,4 +131,12 @@ MEDIA_ROOT = BASE_DIR / 'media'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 
+# Email налаштування
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'твій_email@gmail.com'  # ← встав свій Gmail
+EMAIL_HOST_PASSWORD = 'твій_пароль_додатку'  # ← пароль додатку з Google
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 

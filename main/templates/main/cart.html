@@ -23,9 +23,18 @@
             <div class="cart-item-info">
                 <h3>{{ item.product.name }}</h3>
                 <p>Ціна: {{ item.product.price }} грн</p>
-                <p>Кількість: {{ item.quantity }}</p>
                 <p>Сума: {{ item.total_price }} грн</p>
             </div>
+
+            <div class="cart-quantity">
+                <form method="POST" action="{% url 'cart_update' item.id %}">
+                    {% csrf_token %}
+                    <button type="submit" name="action" value="decrease" class="qty-btn">−</button>
+                    <span class="qty-number">{{ item.quantity }}</span>
+                    <button type="submit" name="action" value="increase" class="qty-btn">+</button>
+                </form>
+            </div>
+
             <a href="{% url 'cart_remove' item.id %}" class="btn-remove">✕ Видалити</a>
         </div>
         {% endfor %}
